@@ -47,7 +47,7 @@
 /mob/living/carbon/human/buckle_mob(mob/living/M, forced = FALSE, check_loc = TRUE)
 	if(forced)
 		return ..() // Skip our checks
-	if(!isTaurTail(tail_style))
+	if(!istaurtail(tail_style))
 		return FALSE
 	else
 		var/datum/sprite_accessory/tail/taur/taurtype = tail_style
@@ -68,7 +68,7 @@
 
 	var/mob/living/carbon/human/H = M
 
-	if(isTaurTail(H.tail_style))
+	if(istaurtail(H.tail_style))
 		to_chat(src,"<span class='warning'>Too many legs. TOO MANY LEGS!!</span>")
 		return FALSE
 
@@ -333,7 +333,6 @@
 	hide_body_parts = null
 	clip_mask_icon = null
 	clip_mask_state = null
-	//apply_restrictions = TRUE
 	//species_allowed = list(SPECIES_SHADEKIN, SPECIES_SHADEKIN_CREW)
 
 /datum/sprite_accessory/tail/taur/shadekin_tail/shadekin_tail_2c

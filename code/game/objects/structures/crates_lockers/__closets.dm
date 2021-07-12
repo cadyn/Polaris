@@ -59,7 +59,7 @@
 			storage_capacity = content_size + 5
 
 	if(ispath(closet_appearance))
-		var/decl/closet_appearance/app = GLOB.closet_appearances[closet_appearance]
+		var/decl/closet_appearance/app = GET_DECL(closet_appearance)
 		if(app)
 			icon = app.icon
 			color = null
@@ -434,17 +434,17 @@
 			breakout = 0
 			return
 
-			playsound(src, breakout_sound, 100, 1)
-			animate_shake()
-			add_fingerprint(escapee)
-
-		//Well then break it!
-		breakout = 0
-		to_chat(escapee, "<span class='warning'>You successfully break out!</span>")
-		visible_message("<span class='danger'>\The [escapee] successfully broke out of \the [src]!</span>")
 		playsound(src, breakout_sound, 100, 1)
-		break_open()
 		animate_shake()
+		add_fingerprint(escapee)
+
+	//Well then break it!
+	breakout = 0
+	to_chat(escapee, "<span class='warning'>You successfully break out!</span>")
+	visible_message("<span class='danger'>\The [escapee] successfully broke out of \the [src]!</span>")
+	playsound(src, breakout_sound, 100, 1)
+	break_open()
+	animate_shake()
 
 /obj/structure/closet/proc/break_open()
 	sealed = 0

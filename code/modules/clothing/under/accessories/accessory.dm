@@ -39,7 +39,7 @@
 
 /obj/item/clothing/accessory/proc/get_mob_overlay()
 	if(!istype(loc,/obj/item/clothing/))	//don't need special handling if it's worn as normal item.
-		return ..()
+		return
 	var/tmp_icon_state = "[overlay_state? "[overlay_state]" : "[icon_state]"]"
 	if(ishuman(has_suit.loc))
 		wearer = has_suit.loc
@@ -378,7 +378,7 @@
 /obj/item/clothing/accessory/bracelet/material/New(var/newloc, var/new_material)
 	..(newloc)
 	if(!new_material)
-		new_material = DEFAULT_WALL_MATERIAL
+		new_material = MAT_STEEL
 	material = get_material_by_name(new_material)
 	if(!istype(material))
 		qdel(src)

@@ -10,7 +10,7 @@
 	throw_speed = 2
 	throw_range = 5
 	origin_tech = list(TECH_MATERIAL = 1)
-	matter = list(DEFAULT_WALL_MATERIAL = 500)
+	matter = list(MAT_STEEL = 500)
 	drop_sound = 'sound/items/drop/accessory.ogg'
 	pickup_sound = 'sound/items/pickup/accessory.ogg'
 	var/elastic
@@ -175,17 +175,6 @@ var/last_chew = 0
 
 /obj/item/weapon/handcuffs/cable/white
 	color = "#FFFFFF"
-
-/obj/item/weapon/handcuffs/cable/attackby(var/obj/item/I, mob/user as mob)
-	..()
-	if(istype(I, /obj/item/stack/rods))
-		var/obj/item/stack/rods/R = I
-		if (R.use(1))
-			var/obj/item/weapon/material/wirerod/W = new(get_turf(user))
-			user.put_in_hands(W)
-			to_chat(user, "<span class='notice'>You wrap the cable restraint around the top of the rod.</span>")
-			qdel(src)
-			update_icon(user)
 
 /obj/item/weapon/handcuffs/cyborg
 	dispenser = 1

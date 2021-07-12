@@ -1351,10 +1351,10 @@
 			to_chat(usr, "<span class='filter_adminlog'>This can only be used on instances of type /mob/living/carbon/human</span>")
 			return
 
-		H.equip_to_slot_or_del( new /obj/item/weapon/reagent_containers/food/snacks/cookie(H), slot_l_hand )
-		if(!(istype(H.l_hand,/obj/item/weapon/reagent_containers/food/snacks/cookie)))
-			H.equip_to_slot_or_del( new /obj/item/weapon/reagent_containers/food/snacks/cookie(H), slot_r_hand )
-			if(!(istype(H.r_hand,/obj/item/weapon/reagent_containers/food/snacks/cookie)))
+		H.equip_to_slot_or_del( new /obj/item/weapon/reagent_containers/food/snacks/cookiesnack(H), slot_l_hand )
+		if(!(istype(H.l_hand,/obj/item/weapon/reagent_containers/food/snacks/cookiesnack)))
+			H.equip_to_slot_or_del( new /obj/item/weapon/reagent_containers/food/snacks/cookiesnack(H), slot_r_hand )
+			if(!(istype(H.r_hand,/obj/item/weapon/reagent_containers/food/snacks/cookiesnack)))
 				log_admin("[key_name(H)] has their hands full, so they did not receive their cookie, spawned by [key_name(src.owner)].")
 				message_admins("[key_name(H)] has their hands full, so they did not receive their cookie, spawned by [key_name(src.owner)].")
 				return
@@ -1932,16 +1932,21 @@
 			if("show")
 				show_player_info(ckey)
 			if("list")
-				PlayerNotesPage(text2num(href_list["index"]))
+				var/filter
+				if(href_list["filter"] && href_list["filter"] != "0")
+					filter = url_decode(href_list["filter"])
+				PlayerNotesPage(text2num(href_list["index"]), filter)
+			if("filter")
+				PlayerNotesFilter()
 		return
 
-mob/living/proc/can_centcom_reply()
+/mob/living/proc/can_centcom_reply()
 	return 0
 
-mob/living/carbon/human/can_centcom_reply()
+/mob/living/carbon/human/can_centcom_reply()
 	return istype(l_ear, /obj/item/device/radio/headset) || istype(r_ear, /obj/item/device/radio/headset)
 
-mob/living/silicon/ai/can_centcom_reply()
+/mob/living/silicon/ai/can_centcom_reply()
 	return common_radio != null && !check_unable(2)
 
 /atom/proc/extra_admin_link()

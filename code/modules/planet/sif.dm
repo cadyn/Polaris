@@ -156,6 +156,9 @@ var/datum/planet/sif/planet_sif = null
 	sky_visible = TRUE
 	observed_message = "The sky is clear."
 
+	outdoor_sounds_type = /datum/looping_sound/weather/wind/gentle
+	indoor_sounds_type = /datum/looping_sound/weather/wind/gentle/indoors
+
 /datum/weather/sif/overcast
 	name = "overcast"
 	light_modifier = 0.8
@@ -174,6 +177,9 @@ var/datum/planet/sif/planet_sif = null
 		"It's very cloudy."
 		)
 
+	outdoor_sounds_type = /datum/looping_sound/weather/wind/gentle
+	indoor_sounds_type = /datum/looping_sound/weather/wind/gentle/indoors
+
 /datum/weather/sif/light_snow
 	name = "light snow"
 	icon_state = "snowfall_light"
@@ -191,6 +197,9 @@ var/datum/planet/sif/planet_sif = null
 		"Small snowflakes begin to fall from above.",
 		"It begins to snow lightly.",
 		)
+
+	outdoor_sounds_type = /datum/looping_sound/weather/wind/gentle
+	indoor_sounds_type = /datum/looping_sound/weather/wind/gentle/indoors
 
 /datum/weather/sif/snow
 	name = "moderate snow"
@@ -282,15 +291,15 @@ var/datum/planet/sif/planet_sif = null
 	transition_messages = list(
 		"The sky is dark, and rain falls down upon you."
 	)
-//	outdoor_sounds_type = /datum/looping_sound/weather/rain
-//	indoor_sounds_type = /datum/looping_sound/weather/rain/indoors
+	outdoor_sounds_type = /datum/looping_sound/weather/rain
+	indoor_sounds_type = /datum/looping_sound/weather/rain/indoors
 
 /datum/weather/sif/rain/process_effects()
 	..()
 	for(var/mob/living/L as anything in living_mob_list)
 		if(L.z in holder.our_planet.expected_z_levels)
 			var/turf/T = get_turf(L)
-			if(!T.outdoors)
+			if(T.outdoors == OUTDOORS_NO)
 				continue // They're indoors, so no need to rain on them.
 
 			// If they have an open umbrella, it'll guard from rain
@@ -327,8 +336,8 @@ var/datum/planet/sif/planet_sif = null
 		"Loud thunder is heard in the distance.",
 		"A bright flash heralds the approach of a storm."
 	)
-//	outdoor_sounds_type = /datum/looping_sound/weather/rain
-//	indoor_sounds_type = /datum/looping_sound/weather/rain/indoors
+	outdoor_sounds_type = /datum/looping_sound/weather/rain/heavy
+	indoor_sounds_type = /datum/looping_sound/weather/rain/heavy/indoors
 
 
 	transition_chances = list(
@@ -343,7 +352,7 @@ var/datum/planet/sif/planet_sif = null
 	for(var/mob/living/L as anything in living_mob_list)
 		if(L.z in holder.our_planet.expected_z_levels)
 			var/turf/T = get_turf(L)
-			if(!T.outdoors)
+			if(T.outdoors == OUTDOORS_NO)
 				continue // They're indoors, so no need to rain on them.
 
 			// If they have an open umbrella, it'll guard from rain
@@ -401,7 +410,7 @@ var/datum/planet/sif/planet_sif = null
 	for(var/mob/living/carbon/H as anything in human_mob_list)
 		if(H.z in holder.our_planet.expected_z_levels)
 			var/turf/T = get_turf(H)
-			if(!T.outdoors)
+			if(T.outdoors == OUTDOORS_NO)
 				continue // They're indoors, so no need to pelt them with ice.
 
 			// If they have an open umbrella, it'll guard from hail
@@ -497,7 +506,7 @@ var/datum/planet/sif/planet_sif = null
 		var/mob/living/L = thing
 		if(L.z in holder.our_planet.expected_z_levels)
 			var/turf/T = get_turf(L)
-			if(!T.outdoors)
+			if(T.outdoors == OUTDOORS_NO)
 				continue // They're indoors, so no need to burn them with ash.
 
 			L.inflict_heat_damage(rand(1, 3))
@@ -535,7 +544,7 @@ var/datum/planet/sif/planet_sif = null
 		if(L.z in holder.our_planet.expected_z_levels)
 			irradiate_nearby_turf(L)
 			var/turf/T = get_turf(L)
-			if(!T.outdoors)
+			if(T.outdoors == OUTDOORS_NO)
 				continue // They're indoors, so no need to irradiate them with fallout.
 
 			L.rad_act(rand(direct_rad_low, direct_rad_high))
@@ -549,5 +558,5 @@ var/datum/planet/sif/planet_sif = null
 	var/turf/T = pick(turfs) // We get one try per tick.
 	if(!istype(T))
 		return
-	if(T.outdoors)
+	if(T.outdoors == OUTDOORS_YES)
 		SSradiation.radiate(T, rand(fallout_rad_low, fallout_rad_high))
